@@ -1,0 +1,61 @@
+SELECT * FROM starup.`starup data analyst`;
+
+--  Total Baris dan Kolom
+SELECT COUNT(*) AS 'Total Rows' FROM starup.`starup data analyst`;
+
+-- 8114
+
+-- Daftar Kolom dan Tipe Data
+DESCRIBE starup.`starup data analyst`;
+
+-- Statistik Angka (QUANTITY, UNIT PRICE, VALUE)
+SELECT 
+    MIN(QUANTITY) AS min_quantity,
+    MAX(QUANTITY) AS max_quantity,
+    AVG(QUANTITY) AS avg_quantity,
+    SUM(QUANTITY) AS total_quantity,
+    MIN(CAST(`UNIT PRICE` AS DECIMAL(10,2))) AS min_unit_price,
+    MAX(CAST(`UNIT PRICE` AS DECIMAL(10,2))) AS max_unit_price,
+    AVG(CAST(`UNIT PRICE` AS DECIMAL(10,2))) AS avg_unit_price,
+    SUM(CAST(`VALUE` AS DECIMAL(10,2))) AS total_value
+FROM starup.`starup data analyst`;
+
+-- Distribusi Channel
+-- Lihat distribusi data berdasarkan saluran penjualan:
+SELECT CHANNEL, COUNT(*) AS total_rows
+FROM starup.`starup data analyst`
+GROUP BY CHANNEL
+ORDER BY total_rows DESC;
+
+--  Distribusi Region
+-- Hitung jumlah data per region:
+SELECT REGION, COUNT(*) AS total_rows
+FROM starup.`starup data analyst`
+GROUP BY REGION
+ORDER BY total_rows DESC;
+
+-- Identifikasi Kolom dengan Nilai Kosong
+-- Tampilkan jumlah nilai kosong per kolom:
+SELECT 
+    SUM(CASE WHEN QUANTITY IS NULL THEN 1 ELSE 0 END) AS null_quantity,
+    SUM(CASE WHEN `UNIT PRICE` IS NULL THEN 1 ELSE 0 END) AS null_unit_price,
+    SUM(CASE WHEN VALUE IS NULL THEN 1 ELSE 0 END) AS null_value,
+    SUM(CASE WHEN REGION IS NULL THEN 1 ELSE 0 END) AS null_region,
+    SUM(CASE WHEN CHANNEL IS NULL THEN 1 ELSE 0 END) AS null_channel
+FROM starup.`starup data analyst`;
+
+-- Distribusi Nilai Penjualan (VALUE)
+-- Hitung distribusi penjualan berdasarkan kategori produk:
+SELECT CATEGORY, SUM(CAST(VALUE AS DECIMAL(10,2))) AS total_value
+FROM starup.`starup data analyst`
+GROUP BY CATEGORY
+ORDER BY total_value DESC;
+
+-- Distribusi Penjualan Berdasarkan Region
+-- Analisis penjualan di setiap region:-- 
+SELECT REGION, SUM(CAST(VALUE AS DECIMAL(10,2))) AS total_value
+FROM starup.`starup data analyst`
+GROUP BY REGION
+ORDER BY total_value DESC;
+
+
